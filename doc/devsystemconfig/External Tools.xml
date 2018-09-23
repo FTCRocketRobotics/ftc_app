@@ -1,0 +1,16 @@
+<toolSet name="External Tools">
+  <tool name="Enable ADB over TCP/IP" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ModuleSdkPath$/platform-tools/adb" />
+      <option name="PARAMETERS" value="tcpip 5555" />
+      <option name="WORKING_DIRECTORY" />
+    </exec>
+  </tool>
+  <tool name="Connect to ADB over WiFi Direct" description="Attach to the Robot Controller on the current WiFi Direct network." showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ModuleSdkPath$/platform-tools/adb" />
+      <option name="PARAMETERS" value="connect 192.168.49.1:5555" />
+      <option name="WORKING_DIRECTORY" />
+    </exec>
+  </tool>
+</toolSet>
