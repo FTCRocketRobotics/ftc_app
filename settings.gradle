@@ -1,2 +1,6 @@
 include ':FtcRobotController'
-include ':TeamCode'
+include ':TeamCode_11660Falcons'
+include ':TeamCode_12074Dragons'
+include ':TeamCode_12110Titans'
+include ':TeamCode_13749Atlas'
+include ':TeamCode_Coach'
