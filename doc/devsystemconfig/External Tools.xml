@@ -1,16 +1,58 @@
 <toolSet name="External Tools">
   <tool name="Enable ADB over TCP/IP" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
     <exec>
-      <option name="COMMAND" value="$ModuleSdkPath$/platform-tools/adb" />
+      <option name="COMMAND" value="$USER_HOME$/AppData/Local/Android/Sdk/platform-tools/adb.exe" />
       <option name="PARAMETERS" value="tcpip 5555" />
-      <option name="WORKING_DIRECTORY" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
     </exec>
   </tool>
   <tool name="Connect to ADB over WiFi Direct" description="Attach to the Robot Controller on the current WiFi Direct network." showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
     <exec>
-      <option name="COMMAND" value="$ModuleSdkPath$/platform-tools/adb" />
+      <option name="COMMAND" value="$USER_HOME$/AppData/Local/Android/Sdk/platform-tools/adb.exe" />
       <option name="PARAMETERS" value="connect 192.168.49.1:5555" />
-      <option name="WORKING_DIRECTORY" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect Home AC" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="PeaceOfMindAC" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect WiFi DIRECT-Gu-11660-RC Falcons" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="DIRECT-Gu-11660-RC" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect WiFi DIRECT-Ao-12074-RC Dragons" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="DIRECT-Ao-12074-RC" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect WiFi DIRECT-On-12110-RC Titans" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="DIRECT-On-12110-RC" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect WiFi DIRECT-Cq-13749-RC Atlas" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="DIRECT-Cq-13749-RC" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <tool name="Connect School WiFi" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$ProjectFileDir$/ConnectWiFi.bat" />
+      <option name="PARAMETERS" value="&quot;Corvallis School District&quot;" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
     </exec>
   </tool>
 </toolSet>
