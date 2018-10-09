@@ -58,7 +58,7 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Color Drive", group="Linear Opmode")
+@TeleOp(name="Basic: Color Drive", group="Coach")
 public class ColorDrive extends LinearOpMode {
 
     // Declare OpMode members.
@@ -66,8 +66,8 @@ public class ColorDrive extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
 
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
+    private ColorSensor sensorColor;
+    private DistanceSensor sensorDistance;
 
     @Override
     public void runOpMode() {
@@ -119,7 +119,7 @@ public class ColorDrive extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -0.5, 0.5) ;
+            //leftPower    = Range.clip(drive + turn, -0.5, 0.5) ;
             rightPower   = Range.clip(drive - turn, -0.5, 0.5) ;
 
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
