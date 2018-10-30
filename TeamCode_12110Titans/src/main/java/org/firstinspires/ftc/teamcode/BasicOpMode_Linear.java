@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="som els proacos", group="Titans Linear Opmode")
+@TeleOp(name="yeet mobile", group="Titans Linear Opmode")
 public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
