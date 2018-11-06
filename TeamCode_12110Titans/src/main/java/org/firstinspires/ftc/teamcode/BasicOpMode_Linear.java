@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -61,6 +62,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor latcherFar = null;
+    private DcMotor latcherClose = null;
+
 
     @Override
     public void runOpMode() {
@@ -72,14 +76,19 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        latcherFar = hardwareMap.get (DcMotor.class, "latcher_far");
+        latcherClose = hardwareMap.get (DcMotor.class, "latcher_close");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        latcherFar.setDirection(DcMotor.Direction.FORWARD);
+        latcherClose.setDirection(DcMotor.Direction.REVERSE);
 leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Wait for the game to start (driver presses PLAY)
+latcherFar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
@@ -89,6 +98,9 @@ rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+            double leftbumperPower;
+            double rightbumperPower;
+
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -104,8 +116,12 @@ rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             //Tank mode
             double lPower = gamepad1.left_stick_y;
             double rPower = gamepad1.right_stick_y;
+            double lbPower = gamepad1.left_trigger;
+            double rbPower = gamepad1.right_trigger;
             leftPower    = Range.clip(lPower, -1.0, 1.0) ;
             rightPower   = Range.clip(rPower, -1.0, 1.0) ;
+            leftbumperPower    = Range.clip(lbPower, -1.0, 1.0);
+            rightbumperPower   = Range.clip(rbPower, -1.0, 1.0);  
 
 
 
@@ -117,6 +133,8 @@ rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
+            latcherFar.setPower(leftbumperPower);
+            latcherClose.setPower(rightbumperPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
