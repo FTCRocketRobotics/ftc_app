@@ -98,8 +98,8 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
-            double leftbumperPower;
-            double rightbumperPower;
+            double leftTriggerPower;
+            double rightTriggerPower;
 
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -116,12 +116,12 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             //Tank mode
             double lPower = gamepad1.left_stick_y;
             double rPower = gamepad1.right_stick_y;
-            double lbPower = gamepad1.left_trigger;
-            double rbPower = gamepad1.right_trigger;
+            double ltPower = gamepad1.left_trigger;
+            double rtPower = gamepad1.right_trigger;
             leftPower    = Range.clip(lPower, -1.0, 1.0) ;
             rightPower   = Range.clip(rPower, -1.0, 1.0) ;
-            leftbumperPower    = Range.clip(lbPower, -1.0, 1.0);
-            rightbumperPower   = Range.clip(rbPower, -1.0, 1.0);  
+            leftTriggerPower    = Range.clip(ltPower, -1.0, 1.0);
+            rightTriggerPower   = Range.clip(rtPower, -1.0, 1.0);
 
 
 
@@ -133,8 +133,8 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
-            latcherFar.setPower(leftbumperPower);
-            latcherClose.setPower(rightbumperPower);
+            latcherFar.setPower(leftTriggerPower);
+            latcherClose.setPower(rightTriggerPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
