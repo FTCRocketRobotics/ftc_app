@@ -91,6 +91,8 @@ latcherFar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        double leftTriggerPower;
+        double rightTriggerPower;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -98,8 +100,7 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
-            double leftTriggerPower;
-            double rightTriggerPower;
+
 
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -138,7 +139,7 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower, leftTriggerPower, rightTriggerPower);
             telemetry.update();
         }
     }
