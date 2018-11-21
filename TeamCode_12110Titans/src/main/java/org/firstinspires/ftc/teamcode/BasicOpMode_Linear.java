@@ -139,7 +139,7 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower, leftTriggerPower, rightTriggerPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f), leftTrigger (%.2f), rightTrigger (%.2f)", leftPower, rightPower, leftTriggerPower, rightTriggerPower);
             telemetry.update();
         }
     }
