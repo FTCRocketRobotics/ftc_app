@@ -116,10 +116,14 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
             */
             //Tank mode
+
+
+
             double lPower = gamepad1.left_stick_y;
             double rPower = gamepad1.right_stick_y;
-            double ltPower = gamepad1.left_trigger;
-            double rtPower = gamepad1.right_trigger;
+            double ltPower = gamepad1.left_stick_x;
+            double rtPower = gamepad1.right_stick_x;
+
             leftPower    = Range.clip(lPower, -1.0, 1.0) ;
             rightPower   = Range.clip(rPower, -1.0, 1.0) ;
             leftTriggerPower  = Range.clip(ltPower, -1.0, 1.0);
