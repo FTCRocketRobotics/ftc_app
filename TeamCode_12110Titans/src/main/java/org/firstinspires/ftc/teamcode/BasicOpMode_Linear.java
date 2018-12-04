@@ -64,6 +64,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor rightDrive = null;
     private DcMotor latcherFar = null;
     private DcMotor latcherClose = null;
+    private DcMotor armyDude = null;
+    private DcMotor armyOff = null;
 
 
     @Override
@@ -78,6 +80,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         latcherFar = hardwareMap.get (DcMotor.class, "latcher_far");
         latcherClose = hardwareMap.get (DcMotor.class, "latcher_close");
+        armyDude = hardwareMap.get (DcMotor.class, "army_dude");
+        armyOff = hardwareMap.get (DcMotor.class, "army_off");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -85,10 +89,14 @@ public class BasicOpMode_Linear extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         latcherFar.setDirection(DcMotor.Direction.FORWARD);
         latcherClose.setDirection(DcMotor.Direction.REVERSE);
+        armyDude.setDirection(DcMotor.Direction.FORWARD);
+        armyOff.setDirection(DcMotor.Direction.REVERSE);
 leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 latcherFar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wait for the game to start (driver presses PLAY)
+latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+armyDude.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+armyOff.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
@@ -97,6 +105,8 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
         double rightPower;
         double leftTriggerPower;
         double rightTriggerPower;
+        double armyDudePower;
+        double armyOffPower;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -123,11 +133,15 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             double rPower = gamepad1.right_stick_y;
             double ltPower = gamepad1.left_stick_x;
             double rtPower = gamepad1.right_stick_x;
+            double adPower = gamepad2.left_stick_x;
+            double aoPower = gamepad2.right_stick_x;
 
             leftPower    = Range.clip(lPower, -1.0, 1.0) ;
             rightPower   = Range.clip(rPower, -1.0, 1.0) ;
             leftTriggerPower  = Range.clip(ltPower, -1.0, 1.0);
             rightTriggerPower  = Range.clip(rtPower, -1.0, 1.0);
+            armyDudePower  = Range.clip(adPower, -1.0, 1.0);
+            armyOffPower  = Range.clip(aoPower, -1.0, 1.0);
 
 
 
@@ -141,11 +155,14 @@ latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);        // Wa
             rightDrive.setPower(rightPower);
             latcherFar.setPower(leftTriggerPower);
             latcherClose.setPower(rightTriggerPower);
+            armyDude.setPower(armyDudePower);
+            armyOff.setPower(armyOffPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Motors", "leftTrigger (%.2f), rightTrigger (%.2f)", leftTriggerPower, rightTriggerPower);
+            telemetry.addData("Motors","armyDude (%.2f), armyOff (%.2f)", armyDudePower, armyOffPower);
             telemetry.update();
         }
     }
