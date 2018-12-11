@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -66,7 +67,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor latcherClose = null;
     private DcMotor armyDude = null;
     private DcMotor armyOff = null;
-
+private Servo mrclawPants = null;
+private Servo mrsclawPants = null;
 
     @Override
     public void runOpMode() {
@@ -82,6 +84,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         latcherClose = hardwareMap.get (DcMotor.class, "latcher_close");
         armyDude = hardwareMap.get (DcMotor.class, "army_dude");
         armyOff = hardwareMap.get (DcMotor.class, "army_off");
+        mrclawPants = hardwareMap.get (Servo.class, "mrclaw_pants");
+        mrsclawPants = hardwareMap.get (Servo.class, "mrsclaw_pants");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -107,6 +111,8 @@ armyOff.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// Wait for the ga
         double rightTriggerPower;
         double armyDudePower;
         double armyOffPower;
+        boolean mrclawPants;
+        boolean mrsclawPants;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -135,13 +141,16 @@ armyOff.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// Wait for the ga
             double rtPower = gamepad1.right_stick_x;
             double adPower = gamepad2.left_stick_x;
             double aoPower = gamepad2.right_stick_x;
+            boolean mrPower = gamepad1.a;
+            boolean mrsPower = gamepad1.b;
 
             leftPower    = Range.clip(lPower, -1.0, 1.0) ;
             rightPower   = Range.clip(rPower, -1.0, 1.0) ;
             leftTriggerPower  = Range.clip(ltPower, -1.0, 1.0);
             rightTriggerPower  = Range.clip(rtPower, -1.0, 1.0);
-            armyDudePower  = Range.clip(adPower, -1.0, 1.0);
-            armyOffPower  = Range.clip(aoPower, -1.0, 1.0);
+            armyDudePower  = Range.clip(adPower, -0.5, 0.5);
+            armyOffPower  = Range.clip(aoPower, -0.5, 0.5);
+
 
 
 
