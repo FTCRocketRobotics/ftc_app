@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -99,7 +100,7 @@ public class atlas_upper_program extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             drive =  gamepad1.left_stick_y;
-            turn  =  gamepad1.left_stick_x;
+            turn  =  -gamepad1.left_stick_x;
 
             if (gamepad1.right_bumper) {
                 intake = 1.0;

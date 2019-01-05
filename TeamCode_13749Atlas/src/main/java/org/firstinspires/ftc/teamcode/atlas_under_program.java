@@ -92,7 +92,7 @@ public class atlas_under_program
         intakeDrive = hwMap.get(DcMotor.class, "intake_drive");
         linearDrive  = hwMap.get(DcMotor.class, "linear_drive");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         //depositDrive.setDirection(DcMotor.Direction.FORWARD);
         intakeDrive.setDirection(DcMotor.Direction.FORWARD);
         //latchingDrive.setDirection(DcMotor.Direction.FORWARD);

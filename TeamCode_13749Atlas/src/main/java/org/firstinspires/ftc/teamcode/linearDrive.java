@@ -50,14 +50,13 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Linear drive and intake", group="Linear Opmode")
-@Disabled
+@TeleOp(name="arm testing", group="Linear Opmode")
+//@Disabled
 public class linearDrive extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor linearDriver = null;
-    private DcMotor intakeDrive = null;
+    private DcMotor armDrive = null;
 
     @Override
     public void runOpMode() {
@@ -67,13 +66,11 @@ public class linearDrive extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        linearDriver  = hardwareMap.get(DcMotor.class, "linear_driver");
-        intakeDrive   = hardwareMap.get(DcMotor.class, "intake_drive");
+        armDrive = hardwareMap.get(DcMotor.class, "arm_driver");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        linearDriver.setDirection(DcMotor.Direction.FORWARD);
-        intakeDrive.setDirection(DcMotor.Direction.FORWARD);
+        armDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -83,30 +80,22 @@ public class linearDrive extends LinearOpMode {
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
-            double linearPower;
-            double intakepower;
+            double armPower;
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double linearDrive = 0;
-            if (gamepad1.dpad_up) {
-                linearDrive = 1.0;
-            }
-
-            if (gamepad1.dpad_down) {
-                linearDrive = -1.0;
-            }
-            linearPower    = Range.clip(linearDrive, -1.0, 1.0) ;
+            double armMotor = gamepad1.left_stick_y;
+            armPower    = Range.clip(armMotor, -0.1, 0.2) ;
 
             // Send calculated power to wheels
-            linearDriver.setPower(linearPower);
+            armDrive.setPower(armPower);
 
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "linear (%.2f)", linearDriver);
+            telemetry.addData("Motors", "linear (%.2f)", armDrive);
             telemetry.update();
         }
     }

@@ -29,9 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -51,12 +53,20 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
 
 public class autonomus extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+    private atlas_under_program robot = new atlas_under_program();
+    public static final double turnSpeed = 0.5;
+    public static final double driveSpeed = 0.5;
+    public static final double stopSpeed = 0.0;
+    public static boolean leftCheck = false;
+    public static boolean rightCheck = false;
+    public static boolean middleCheck = false;
+    private ElapsedTime runtime = new ElapsedTime();
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -130,11 +140,45 @@ public class autonomus extends LinearOpMode {
                         if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Left");
+                            leftCheck = true;
                           } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Right");
+                              rightCheck = true;
                           } else {
                             telemetry.addData("Gold Mineral Position", "Center");
+                              middleCheck = true;
                           }
+                          /*if (leftCheck == true) {
+                              robot.leftDrive.setPower(turnSpeed);
+                              sleep(100);
+                              robot.leftDrive.setPower(stopSpeed);
+                              runtime.reset();
+                              while (runtime.milliseconds() < 500)
+                              robot.leftDrive.setPower(driveSpeed);
+                              robot.rightDrive.setPower(driveSpeed);
+                              sleep(100);
+                              robot.leftDrive.setPower(stopSpeed);
+                              robot.rightDrive.setPower(stopSpeed);
+                          } else if (rightCheck == true) {
+                              robot.rightDrive.setPower(turnSpeed);
+                              sleep(100);
+                              robot.rightDrive.setPower(stopSpeed);
+                              sleep(10);
+                              robot.leftDrive.setPower(driveSpeed);
+                              robot.rightDrive.setPower(driveSpeed);
+                              sleep(100);
+                              robot.leftDrive.setPower(stopSpeed);
+                              robot.rightDrive.setPower(stopSpeed);
+                          } else if (middleCheck == true) {
+                              robot.leftDrive.setPower(driveSpeed);
+                              robot.rightDrive.setPower(driveSpeed);
+                              sleep(100);
+                              robot.leftDrive.setPower(stopSpeed);
+                              robot.rightDrive.setPower(stopSpeed);
+                          } else {
+                              robot.leftDrive.setPower(stopSpeed);
+                              robot.rightDrive.setPower(stopSpeed);
+                          }*/
                         }
                       }
                       telemetry.update();
