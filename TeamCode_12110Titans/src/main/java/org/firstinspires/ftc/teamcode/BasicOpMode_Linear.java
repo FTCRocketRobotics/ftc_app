@@ -35,8 +35,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Func;
 
 
 /**
@@ -67,17 +70,83 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor latcherClose = null;
     private DcMotor armyDude = null;
     private DcMotor armyOff = null;
-private Servo mrclawPants = null;
-private Servo mrsclawPants = null;
+    private Servo mrclawPants = null;
+    private Servo mrsclawPants = null;
+
+    private double leftPower; // left drive motor
+    private double rightPower; // right drive motor
+    private double leftTriggerPower; // latch
+    private double rightTriggerPower; // latch
+    private double armyDudePower; // arm
+    private double armyOffPower; // arm
+    private double mrclawPos; // claw
+    private double mrsclawPos; // claw
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        initRobot();
+        waitForStart();
+        runtime.reset();
+
+// Setup a variable for each drive wheel to save power level for telemetry
+
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+
+            // Choose to drive using either Tank Mode, or POV Mode
+            // Comment out the method that's not used.  The default below is POV.
+
+            // POV Mode uses left stick to go forward, and right stick to turn.
+            // - This uses basic math to combine motions and is easier to drive straight.
+            /*
+            double drive = -gamepad1.left_stick_y;
+            double turn  =  gamepad1.right_stick_x;
+            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            */
+            //Tank mode
+
+            if (gamepad2.a) {
+                openClaw();
+            }
+            //else if (gamepad1.b){
+            //    closeClaw();
+            //}
+            else {
+                closeClaw();
+            }
+
+            leftPower    = Range.clip(gamepad1.left_stick_y, -1.0, 1.0) ;
+            rightPower   = Range.clip(gamepad1.right_stick_y, -1.0, 1.0) ;
+            leftTriggerPower  = Range.clip(latcherClose(), -1.0, 1.0);
+            rightTriggerPower  = Range.clip(latcherFar(), -1.0, 1.0);
+            armyDudePower  = Range.clip(gamepad2.left_stick_x, -0.5, 0.5);
+            armyOffPower  = Range.clip(gamepad2.right_stick_x, -0.5, 0.5);
+
+            // Tank Mode uses one stick to control each wheel.
+            // - This requires no math, but it is hard to drive forward slowly and keep straight.
+            // leftPower  = -gamepad1.left_stick_y ;
+            // rightPower = -gamepad1.right_stick_y ;
+
+            // Send calculated power to wheels
+            leftDrive.setPower(leftPower);
+            rightDrive.setPower(rightPower);
+            latcherFar.setPower(leftTriggerPower);
+            latcherClose.setPower(rightTriggerPower);
+            armyDude.setPower(armyDudePower);
+            armyOff.setPower(armyOffPower);
+            teleUpdate();
+        }
+    }
+
+    private void initRobot(){
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+        //mrsclawPants doesn't exist.
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         latcherFar = hardwareMap.get (DcMotor.class, "latcher_far");
@@ -95,84 +164,83 @@ private Servo mrsclawPants = null;
         latcherClose.setDirection(DcMotor.Direction.REVERSE);
         armyDude.setDirection(DcMotor.Direction.FORWARD);
         armyOff.setDirection(DcMotor.Direction.REVERSE);
-leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-latcherFar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-armyDude.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-armyOff.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        runtime.reset();
-
-// Setup a variable for each drive wheel to save power level for telemetry
-        double leftPower;
-        double rightPower;
-        double leftTriggerPower;
-        double rightTriggerPower;
-        double armyDudePower;
-        double armyOffPower;
-        boolean mrclawPants;
-        boolean mrsclawPants;
-
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-
-
-
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            /*
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            */
-            //Tank mode
-
-
-
-            double lPower = gamepad1.left_stick_y;
-            double rPower = gamepad1.right_stick_y;
-            double ltPower = gamepad1.left_stick_x;
-            double rtPower = gamepad1.right_stick_x;
-            double adPower = gamepad2.left_stick_x;
-            double aoPower = gamepad2.right_stick_x;
-            boolean mrPower = gamepad1.a;
-            boolean mrsPower = gamepad1.b;
-
-            leftPower    = Range.clip(lPower, -1.0, 1.0) ;
-            rightPower   = Range.clip(rPower, -1.0, 1.0) ;
-            leftTriggerPower  = Range.clip(ltPower, -1.0, 1.0);
-            rightTriggerPower  = Range.clip(rtPower, -1.0, 1.0);
-            armyDudePower  = Range.clip(adPower, -0.5, 0.5);
-            armyOffPower  = Range.clip(aoPower, -0.5, 0.5);
-
-
-
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
-
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-            latcherFar.setPower(leftTriggerPower);
-            latcherClose.setPower(rightTriggerPower);
-            armyDude.setPower(armyDudePower);
-            armyOff.setPower(armyOffPower);
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Motors", "leftTrigger (%.2f), rightTrigger (%.2f)", leftTriggerPower, rightTriggerPower);
-            telemetry.addData("Motors","armyDude (%.2f), armyOff (%.2f)", armyDudePower, armyOffPower);
-            telemetry.update();
-        }
+        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        latcherFar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        latcherClose.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armyDude.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armyOff.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// Wait for the game to start (driver presses PLAY)
     }
+
+    private void openClaw(){
+        mrclawPos = 1.0;
+        mrsclawPos = 0.0;
+        mrclawPants.setPosition(mrclawPos);
+        mrsclawPants.setPosition(mrsclawPos);
+    }
+
+    private void closeClaw(){
+        mrclawPos = 0.0;
+        mrsclawPos = 1.0;
+        mrclawPants.setPosition(mrclawPos);
+        mrsclawPants.setPosition(mrsclawPos);
+    }
+
+    double latcherClose() {
+        double ltPower;
+        // latch close
+        if (gamepad2.dpad_up) {
+            ltPower = 1.0;
+        }
+        else if (gamepad2.dpad_down){
+            ltPower = -1.0;
+        }
+        else {
+            ltPower = 0.0;
+        }
+        return ltPower;
+    }
+
+    double latcherFar() {
+        double rtPower;
+        if (gamepad2.dpad_left) {
+            rtPower = 1.0;
+        }
+        else if (gamepad2.dpad_right) {
+            rtPower = -1.0;
+        }
+        else {
+            rtPower = 0.0;
+        }
+        return rtPower;
+    }
+
+    private void teleUpdate(){
+        // Show the elapsed game time and wheel power.
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "latch far (%.2f), latch close (%.2f)", leftTriggerPower, rightTriggerPower);
+        telemetry.addData("Motors","arm far (%.2f), arm close (%.2f)", armyDudePower, armyOffPower);
+        telemetry.addData("Motors", "left claw (%.2f), right claw (%.2f)", mrclawPos, mrsclawPos);
+        // TODO: need to add flag servo data
+        telemetry.addData("voltage", "%.1f volts", new Func<Double>() {
+            @Override public Double value() {
+                return getBatteryVoltage();
+            }
+        });
+        telemetry.update();
+    }
+
+    // Computes the current battery voltage
+    double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
+    }
+
 }
